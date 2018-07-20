@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    template="template.xhtml">
+    
+        <ui:define name="bodyForm">
+        <h:form id="formulario">
+            <p:panel id="pnlAfiliados" header="Listado de Afiliados" style="margin-bottom:5px">
+                <p:growl id="mensajes" life="2000"/>
+                <p:dataTable id="dtAfiliados" var="miAfiliado" value="#{afiliado.obtenerAfiliado()}" 
+                             emptyMessage="Lista vacia">
+                    <p:column headerText="Identificacion">
+                        <h:outputText value="#{miAfiliado.identificacion}" />
+                    </p:column>
+
+                    <p:column headerText="Nombre1">
+                        <h:outputText value="#{miAfiliado.nombre1}" />
+                    </p:column>
+
+                    <p:column headerText="Nombre2">
+                        <h:outputText value="#{miAfiliado.nombre2}" />
+                    </p:column>
+
+                    <p:column headerText="Apellido1">
+                        <h:outputText value="#{miAfiliado.apellido1}" />
+                    </p:column>
+
+                    <p:column headerText="Apellido2">
+                        <h:outputText value="#{miAfiliado.apellido2}" />
+                    </p:column>
+
+                    <p:column headerText="Acciones">   
+                        <p:commandLink value="Editar" actionListener="#{afiliado.setAfiliado(miAfiliado)}" disabled="#{!usuario.validarPermisoEditar()}"
+                                       oncomplete="PF('edAfiliado').show();" update="diaEditar"/> 
+                        <h:outputText value="     "/>
+                        <p:commandLink value="Eliminar" action="#{afiliado.eliminarAfiliado(miAfiliado)}" disabled="#{!usuario.validarPermisoEliminar()}"
+                                       update="dtAfiliados,formulario:mensajes"/>
+                        <h:outputText value="     "/>
+
+                    </p:column>
+
+                </p:dataTable> 
+            </p:panel>     
+            
+            <p:panel id="pnlNuevoAfiliado" header="Crear Nuevo Afiliado">
+                <p:commandButton value="Nuevo" onclick="PF('agAfiliado').show();" update=":formAgregar" disabled="#{!usuario.validarPermisoCrear()}"/>
+            </p:panel>
+
+            
+        </h:form>
+				
+            <!-- ventana Emergente de Agregar Usuario-->        
+        <p:dialog header="Agregar Afiliado" widgetVar="agAfiliado" modal="false" height="460">
+            <h:form id="formAgregar">
+                <p:panelGrid columns="3">  
+                    
+                    <p:outputLabel for="cboTipoIdentificacion" value="Tipo Identificacion:"/>
+                    <p:selectOneMenu id="cboTipoIdentificacion" value="#{afiliado.afiliado.fkTipoidentificacionId}" 
+                                     required="true" requiredMessage="Tipo Identificación Requerido"
+                                     converter="tipoIdentificacionConverter" >                                                                                    
+                        <f:selectItem itemLabel="--Seleccione un valor--"/>
+                        <f:selectItems value="#{parametros.obtenerTipoIdentificacion()}" var="vTipoId" 
+                                       itemLabel="#{vTipoId.descripcion}" itemValue="#{vTipoId}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip for="cboTipoIdentificacion" showEvent="focus" hideEvent="blur" value="Tipo de Identificacion"/>
+                                        
+                    <p:outputLabel for="txtIdentificacion" value="Identificacion:" />                                        
+                    <p:inputText id="txtIdentificacion" value="#{afiliado.afiliado.identificacion}" 
+                                 required="true" requiredMessage="Identificacion es Requerida"/>
+                    <p:tooltip for="txtIdentificacion" showEvent="focus" hideEvent="blur" value="Identificacion del Afiliado"/>
+                                        
+                    <p:outputLabel for="txtPrimerNombre" value="Primer Nombre:"/>
+                    <p:inputText id="txtPrimerNombre" value="#{afiliado.afiliado.nombre1}" required="true" 
+                                 requiredMessage="Primer Nombre es Requerido"/>
+                    <p:tooltip for="txtPrimerNombre" showEvent="focus" hideEvent="blur" value="Primer Nombre del Afiliado"/>
+                                        
+                    <p:outputLabel for="txtSegundoNombre" value="Segundo Nombre:"/>
+                    <p:inputText id="txtSegundoNombre" value="#{afiliado.afiliado.nombre2}"/>
+                    <p:tooltip for="txtSegundoNombre" showEvent="focus" hideEvent="blur" value="Segundo Nombre del Afiliado"/>
+                                        
+                    <p:outputLabel for="txtPrimerApellido" value="Primer Apellido:"/>
+                    <p:inputText id="txtPrimerApellido" value="#{afiliado.afiliado.apellido1}" required="true" 
+                                 requiredMessage="Primer Apellido es Requerido"/>
+                    <p:tooltip for="txtPrimerApellido" showEvent="focus" hideEvent="blur" value="Primer Apellido del Afiliado"/>
+                                        
+                    <p:outputLabel for="txtSegundoApellido" value="Segundo Apellido:"/>
+                    <p:inputText id="txtSegundoApellido" value="#{afiliado.afiliado.apellido2}"/>
+                    <p:tooltip for="txtSegundoApellido" showEvent="focus" hideEvent="blur" value="Segundo Apellido del Afiliado"/>
+                                        
+                    <p:outputLabel for="cboGenero" value="Genero:"/>
+                    <p:selectOneMenu id="cboGenero" value="#{afiliado.afiliado.fkGeneroId}" 
+                                     required="true" requiredMessage="Género Requerido"
+                                     converter="generoConverter" >                                                                                    
+                        <f:selectItem itemLabel="--Seleccione un valor--"/>
+                        <f:selectItems value="#{parametros.obtenerGenero()}" var="vGenero" 
+                                       itemLabel="#{vGenero.descripcion}" itemValue="#{vGenero}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip for="cboGenero" showEvent="focus" hideEvent="blur" value="Genero"/>
+                                        
+                                                                                
+                    <p:outputLabel for="txtDireccion" value="Direccion:"/>
+                    <p:inputText id="txtDireccion" value="#{afiliado.afiliado.direccion}"/>
+                    <p:tooltip for="txtDireccion" showEvent="focus" hideEvent="blur" value="Direccion"/>                                                                                   
+                                        
+                    <p:outputLabel for="txtTelefono" value="Telefono:"/>
+                    <p:inputText id="txtTelefono" value="#{afiliado.afiliado.telefono}"/>
+                    <p:tooltip for="txtTelefono" showEvent="focus" hideEvent="blur" value="Telefono"/>   
+                                        
+                    <p:outputLabel for="cboEstado" value="Estado:"/>
+                    <p:selectOneMenu id="cboEstado" value="#{afiliado.afiliado.fkEstadoId}" 
+                                     required="true" requiredMessage="Estado Requerido"
+                                     converter="estadoConverter" >                                                                                    
+                        <f:selectItem itemLabel="--Seleccione un valor--"/>
+                        <f:selectItems value="#{parametros.obtenerEstado()}" var="vEstado" 
+                                       itemLabel="#{vEstado.descripcion}" itemValue="#{vEstado}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip for="cboEstado" showEvent="focus" hideEvent="blur" value="Estado"/>        
+
+                </p:panelGrid>
+                <br/>
+                <p:commandButton id="btnGuardar" image="ui-icon-key" 
+                                 action="#{afiliado.registrarAfiliado()}" 
+                                 onclick="agAfiliado.Hide();" 
+                                 value="Guardar" update=":formulario:mensajes"/>
+            </h:form>    
+        </p:dialog> 
+            
+        <!-- ventana Emergente de Editar Usuario-->        
+        <p:dialog id="diaEditar" header="Editar Afiliado" widgetVar="edAfiliado" modal="false" height="460">
+            <h:form>
+                <p:panelGrid columns="3" >  
+                    
+                    <p:outputLabel for="cboTipoIdentificacion" value="Tipo Identificacion:"/>
+                    <p:selectOneMenu id="cboTipoIdentificacion" value="#{afiliado.afiliado.fkTipoidentificacionId}"
+                                     converter="tipoIdentificacionConverter" >
+                        <f:selectItem itemLabel="--Seleccione un valor--"/>
+                        <f:selectItems value="#{parametros.obtenerTipoIdentificacion()}" var="vTipoId"
+                                       itemLabel="#{vTipoId.descripcion}" itemValue="#{vTipoId}" />                
+                    </p:selectOneMenu>
+                    <p:tooltip for="cboTipoIdentificacion" showEvent="focus" hideEffect="blur" value="Tipo Identificacion"/>                
+
+                    <p:outputLabel for="txtIdentificacion" value="Identificacion:" />                                        
+                    <p:inputText id="txtIdentificacion" value="#{afiliado.afiliado.identificacion}" 
+                                 required="true" requiredMessage="Identificacion es Requerida"/>
+                    <p:tooltip for="txtIdentificacion" showEvent="focus" hideEvent="blur" value="Identificacion del Afiliado"/>
+
+                    <p:outputLabel for="txtPrimerNombre" value="Primer Nombre:"/>
+                    <p:inputText id="txtPrimerNombre" value="#{afiliado.afiliado.nombre1}" 
+                                 required="true" requiredMessage="Primer Nombre es Requerido"/>
+                    <p:tooltip for="txtPrimerNombre" showEvent="focus" hideEvent="blur" value="Primer Nombre del Afiliado"/>
+
+                    <p:outputLabel for="txtSegundoNombre" value="Segundo Nombre:"/>
+                    <p:inputText id="txtSegundoNombre" value="#{afiliado.afiliado.nombre2}"/>
+                    <p:tooltip for="txtSegundoNombre" showEvent="focus" hideEvent="blur" value="Segundo Nombre del Afiliado"/>
+
+                    <p:outputLabel for="txtPrimerApellido" value="Primer Apellido:"/>
+                    <p:inputText id="txtPrimerApellido" value="#{afiliado.afiliado.apellido1}" 
+                                 required="true" requiredMessage="Primer Apellido es Requerido"/>
+                    <p:tooltip for="txtPrimerApellido" showEvent="focus" hideEvent="blur" value="Primer Apellido del Afiliado"/>
+
+                    <p:outputLabel for="txtSegundoApellido" value="Segundo Apellido:"/>
+                    <p:inputText id="txtSegundoApellido" value="#{afiliado.afiliado.apellido2}"/>
+                    <p:tooltip for="txtSegundoApellido" showEvent="focus" hideEvent="blur" value="Segundo Apellido del Afiliado"/>
+
+                    <p:outputLabel for="cboGenero" value="Genero:"/>
+                    <p:selectOneMenu id="cboGenero" value="#{afiliado.afiliado.fkGeneroId}" 
+                                     converter="generoConverter" >                                                                                    
+                        <f:selectItem itemLabel="--Seleccione un valor--"/>
+                        <f:selectItems value="#{parametros.obtenerGenero()}" var="vGenero" 
+                                       itemLabel="#{vGenero.descripcion}" itemValue="#{vGenero}"/>
+                                                               
+                    </p:selectOneMenu>
+                    <p:tooltip for="cboGenero" showEvent="focus" hideEvent="blur" value="Genero"/>
+
+                    <p:outputLabel for="txtDireccion" value="Direccion:"/>
+                    <p:inputText id="txtDireccion" value="#{afiliado.afiliado.direccion}"/>
+                    <p:tooltip for="txtDireccion" showEvent="focus" hideEvent="blur" value="Direccion"/>                                                                                   
+
+                    <p:outputLabel for="txtTelefono" value="Telefono:"/>
+                    <p:inputText id="txtTelefono" value="#{afiliado.afiliado.telefono}"/>
+                    <p:tooltip for="txtTelefono" showEvent="focus" hideEvent="blur" value="Telefono"/>   
+                                        
+                    <p:outputLabel for="cboEstado" value="Estado:"/>
+                    <p:selectOneMenu id="cboEstado" value="#{afiliado.afiliado.fkEstadoId}" 
+                                     converter="estadoConverter" >                                                                                    
+                        <f:selectItem itemLabel="--Seleccione un valor--"/>
+                        <f:selectItems value="#{parametros.obtenerEstado()}" var="vEstado" 
+                                       itemLabel="#{vEstado.descripcion}" itemValue="#{vEstado}"/>
+                    </p:selectOneMenu>
+                    <p:tooltip for="cboEstado" showEvent="focus" hideEvent="blur" value="Estado"/>                            
+                </p:panelGrid>    
+                <br/>    
+                <p:commandButton id="btnEditar" image="ui-icon-key" 
+                                    actionListener="#{afiliado.editarAfiliado()}" 
+                                    onclick="edAfiliado.Hide();" value="Editar" update=":formulario:mensajes"/>                                                                
+            </h:form>                            
+        </p:dialog>            
+            
+            
+            
+            
+    </ui:define>
+    
+</ui:composition>
