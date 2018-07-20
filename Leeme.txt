@@ -1,0 +1,22 @@
+Rol Administrador (Permisos: Crear, Leer, Actualizar y Eliminar)
+
+Login: CAROLVB
+Password: Carol123
+
+Rol Secretario/a (Permisos: Crear y Consultar)
+
+Login: ELENA123 
+Password: Elena321
+
+Rol Supervisor/a (Permisos: Editar y Consultar)
+
+Login: KARENEV
+Password: Karen567
+
+Rol Consultor/a (Permisos: Eliminar y Consultar)
+
+Login: ISABELATG
+Password: Isa573.
+
+
+Base de datos en: PostgreSQL
