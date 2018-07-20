@@ -93,14 +93,14 @@ public class ControlAfiliado {
         this.ejbGenero = ejbGenero;
     }
     
-    // lista los afiliados que estan en la base de datos
+    //Lista los afiliados que estan en la base de datos
     public List<entidades.Afiliado> obtenerAfiliado(){ 
         lstAfiliados = ejbAfiliado.findAll();
         
         return lstAfiliados;
     }
     
-    // Registrar ControlAfiliado
+    // Registrar Afiliado
     public String registrarAfiliado(){
         try {
             transaccion.begin();
@@ -109,7 +109,7 @@ public class ControlAfiliado {
             ejbAfiliado.create(afiliado);
             
             transaccion.commit();
-            this.afiliado = new entidades.Afiliado();  //inicializamos de nuevo el objeto para poder registrar de nuevo
+            this.afiliado = new entidades.Afiliado();  
             
             this.utilitario.adicionarMensaje("Afiliado Guardado Exitosamente", null, 1);            
             this.afiliado = null;
@@ -166,7 +166,7 @@ public class ControlAfiliado {
         
         try{     
             
-            transaccion.begin();                            //inicio la transaccion                            
+            transaccion.begin();                                                     
                           
             ejbAfiliado.remove(afiliado);
                         
@@ -178,7 +178,7 @@ public class ControlAfiliado {
         }catch(Exception ex){
             try{
                 this.utilitario.adicionarMensaje(ex.getMessage(), null, 2);
-                transaccion.rollback();                                         // utilizamos el rollback por si ocurre una ecepcion desaga lo que no se ha borrado completamente 
+                transaccion.rollback();                                         
             } catch (IllegalStateException ex1) {
                 this.utilitario.adicionarMensaje(ex1.getMessage(), null, 2);
             } catch (SecurityException ex2) {

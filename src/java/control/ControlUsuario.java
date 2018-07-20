@@ -106,7 +106,6 @@ public class ControlUsuario {
         
         if (this.usuarioSession != null){
             loginCorrecto = true;
-            System.out.println("La clave del usuario  está bien");
             Session.getInstancia().crearSession_JSF_HTTP(true);             
             Session.getInstancia().getSession().setAttribute("usuarioSession", this.usuarioSession); 
             this.utilitario.adicionarMensaje("CORRECTO!", "BIENVENIDO ", 0);
@@ -117,7 +116,7 @@ public class ControlUsuario {
                 this.utilitario.adicionarMensaje("CONTRASEÑA INCORRECTA", this.login, 2);
             }         
         }catch(NoResultException | NullPointerException ex){
-            System.out.println("gatitosh"+ex.getMessage());
+            System.out.println("catch"+ex.getMessage());
         }
         /*usuarioSession = null;*/
         }
@@ -128,14 +127,11 @@ public class ControlUsuario {
         this.usuarioExiste = ejbUsuario.obtenerUsuarioXlogin(this.login.toUpperCase());
         
         if(this.usuarioExiste != null){
-            
-            System.out.println("Si existe el fukin usuario");
             validarUsuario(this.usuario.getPassword());
             return true;
         }
         else{
             this.utilitario.adicionarMensaje("USUARIO NO EXISTE", this.login, 2);
-            System.out.println("No existe usuario en metodo aparte");
             return false;
         }
     
@@ -147,7 +143,6 @@ public class ControlUsuario {
         boolean disableEditar = true;
        Character editar = rolUsuario.getFkPermisosId().getEditar();
        if(editar.equals('T')){disableEditar = true;}else{disableEditar = false;}
-                System.out.println("Valida editar: "+disableEditar);;
                 return disableEditar;
         }
     
@@ -157,7 +152,6 @@ public class ControlUsuario {
         boolean disableEliminar = true;
         Character eliminar = rolUsuario.getFkPermisosId().getEliminar();
         if(eliminar.equals('T')){disableEliminar = true;}else{disableEliminar = false;}
-                System.out.println("Valida eliminar: "+disableEliminar);;
                 return disableEliminar;
         }
     
@@ -167,16 +161,6 @@ public class ControlUsuario {
         boolean disableCrear = true;
         Character crear = rolUsuario.getFkPermisosId().getCrear();
         if(crear.equals('T')){disableCrear = true;}else{disableCrear = false;}
-                System.out.println("Valida crear: "+disableCrear);;
                 return disableCrear;
-     }
-    
-    /* public void cerrarSesion() throws IOException{
-        Session.getInstancia().redireccionarURL("/faces/index.xhtml");
-        Session.getInstancia().crearSession_JSF_HTTP(false);
-        usuarioSession = null;
-       
-    } */
-   
-        
+     }       
 }

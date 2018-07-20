@@ -63,7 +63,6 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
                 if(oUsuario.getPassword().equals(clave)){
                     return oUsuario;
                     }else{
-                        System.out.println("La clave no es correcta");
                         return null;
                          }
                 

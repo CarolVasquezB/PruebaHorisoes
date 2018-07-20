@@ -17,7 +17,7 @@ import javax.faces.convert.FacesConverter;
 
 /**
  *
- * @author Juan David
+ * @author CarolVasquez
  */
 @FacesConverter("generoConverter")
 public class GeneroConverter implements Converter {

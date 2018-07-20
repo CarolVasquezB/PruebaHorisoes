@@ -10,7 +10,7 @@ import entidades.Usuario;
 
 public class Session {
     
-    private static Session INSTANCIA;   // instancia para patron singleton
+    private static Session INSTANCIA;  
     
     private HttpServletRequest request;
     private HttpSession session;
@@ -23,8 +23,8 @@ public class Session {
     
     } 
     
-    public static Session getInstancia(){  // llamamaos el objeto session a traves de este metodo 
-        if (INSTANCIA == null) {                // solo se crea una instancia por cada session
+    public static Session getInstancia(){  
+        if (INSTANCIA == null) {               
             INSTANCIA = new Session();
         }        
         return INSTANCIA;
@@ -38,7 +38,7 @@ public class Session {
         this.session = session;
     }
     
-    public void crearSession_JSF_HTTP(boolean crearSession) {           // crear la session de usuario
+    public void crearSession_JSF_HTTP(boolean crearSession) {  // crear la session de usuario
         this.request = (HttpServletRequest)FacesContext.getCurrentInstance()
                 .getExternalContext().getRequest();
         this.session = this.request.getSession();
@@ -51,7 +51,7 @@ public class Session {
         
     }
     
-    public void redireccionarURL(String url) {                              // metodo para re direccionar la url para navegar por las paginas
+    public void redireccionarURL(String url) {
         this.facesContext = FacesContext.getCurrentInstance();
         this.externalContext = this.facesContext.getExternalContext();
         String urlBase = this.externalContext.getRequestContextPath();
@@ -64,8 +64,8 @@ public class Session {
         this.facesContext.renderResponse();
     }
     
-    public Usuario obtenerUsuarioLogueado() {                                  // este metodo me obtiene el usuario que esta logueado
-       
+    public Usuario obtenerUsuarioLogueado() {         
+   
         Usuario usuario = (Usuario)this.session.getAttribute("usuarioSession");        
         return usuario;
         
